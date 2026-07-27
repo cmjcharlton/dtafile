@@ -2,6 +2,7 @@
 
 Note that when variables/observations are referenced by index these are one-based to correspond with the Stata convention. For examples of usage see the src directory.
 
+For the official description of the file format see https://www.stata.com/help.cgi?dta
 
 
 #### Create/Load DTA file:

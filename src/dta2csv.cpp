@@ -13,11 +13,7 @@
 // Write CSV data representation of DTA file to standard output
 static void CSV(const dta::DTAFile& dtafile) {
 	std::uint64_t obs = dtafile.GetNumObservations();
-	std::uint32_t vars = dtafile.GetNumVariables();
-	std::vector<std::string> varnames(vars);
-	for (std::uint32_t j = 0; j < vars; ++j) {
-		varnames[j] = dtafile.GetVariableName(j + 1);
-	}
+	std::vector<std::string> varnames = dtafile.GetVariableNames();
 
 	for (const auto &name : varnames) {
 		if (name.contains(",")) {

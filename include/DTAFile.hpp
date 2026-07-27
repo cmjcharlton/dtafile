@@ -1281,6 +1281,7 @@ namespace dta {
 		[[nodiscard]] std::string GetDataLabel() const;
 		[[nodiscard]] std::string GetTimeStamp() const;
 		[[nodiscard]] std::string GetVariableName(std::uint32_t varnumber) const;
+		[[nodiscard]] std::vector<std::string> GetVariableNames() const;
 		[[nodiscard]] std::string GetVariableLabel(std::string_view varname) const;
 		[[nodiscard]] std::string GetValueLabelName(std::string_view varname) const;
 		[[nodiscard]] std::string GetVariableType(std::string_view varname) const;
@@ -3096,6 +3097,10 @@ namespace dta {
 			return "";
 		}
 		return varlist[varnumber - 1];
+	}
+
+	[[nodiscard]] inline std::vector<std::string> DTAFile::GetVariableNames() const {
+		return varlist;
 	}
 
 	[[nodiscard]] inline std::string DTAFile::GetVariableLabel(std::string_view varname) const {

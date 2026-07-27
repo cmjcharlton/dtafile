@@ -16,11 +16,7 @@ struct overloaded : Ts... { using Ts::operator()...; };
 void Head(const dta::DTAFile& dtafile, std::uint64_t numlines) {
 	std::uint64_t obs = dtafile.GetNumObservations();
 	numlines = std::min(numlines, obs);
-	std::uint32_t vars = dtafile.GetNumVariables();
-	std::vector<std::string> varnames(vars);
-	for (std::uint32_t j = 0; j < vars; ++j) {
-		varnames[j] = dtafile.GetVariableName(j + 1);
-	}
+	std::vector<std::string> varnames = dtafile.GetVariableNames();
 	for (std::uint64_t i = 1; i <= numlines; ++i) {
 		for (const auto& name : varnames) {
 			std::print("{:}", dtafile.GetValueString(name, i));
@@ -38,11 +34,7 @@ void Head(const dta::DTAFile& dtafile, std::uint64_t numlines) {
 void Tail(const dta::DTAFile& dtafile, std::uint64_t numlines) {
 	std::uint64_t obs = dtafile.GetNumObservations();
 	numlines = std::min(numlines, obs);
-	std::uint32_t vars = dtafile.GetNumVariables();
-	std::vector<std::string> varnames(vars);
-	for (std::uint32_t j = 0; j < vars; ++j) {
-		varnames[j] = dtafile.GetVariableName(j + 1);
-	}
+	std::vector<std::string> varnames = dtafile.GetVariableNames();
 
 	for (std::uint64_t i = (obs + 1) - numlines; i <= obs; ++i) {
 		for (const auto& name : varnames) {
@@ -60,11 +52,7 @@ void Tail(const dta::DTAFile& dtafile, std::uint64_t numlines) {
 // Prints whole dataset to standard output
 void Print(const dta::DTAFile& dtafile) {
 	std::uint64_t nobs = dtafile.GetNumObservations();
-	std::uint32_t nvar = dtafile.GetNumVariables();
-	std::vector<std::string> varnames(nvar);
-	for (std::uint32_t j = 0; j < nvar; ++j) {
-		varnames[j] = dtafile.GetVariableName(j + 1);
-	}
+	std::vector<std::string> varnames = dtafile.GetVariableNames();
 
 	for (std::uint64_t i = 1; i <= nobs; ++i) {
 		for (const auto& name : varnames) {
@@ -82,12 +70,8 @@ void Print(const dta::DTAFile& dtafile) {
 // Writes a summary table of DTA contents to standard output
 void Summary(const dta::DTAFile& dtafile) {
 	std::uint32_t nvar = dtafile.GetNumVariables();
-	std::vector<std::string> varnames(nvar);
-	for (std::uint32_t j = 0; j < nvar; ++j) {
-		varnames[j] = dtafile.GetVariableName(j + 1);
-	}
 	std::string fmt = "|";
-	for (const auto& name : varnames) {
+	for (const auto& name : dtafile.GetValueLabelNames()) {
 		const dta::ColumnData& column = dtafile.GetVariable(name);
 		fmt += std::visit(overloaded{
 			[](std::monostate) -> std::string {
@@ -151,10 +135,7 @@ void Description(const dta::DTAFile& dtafile) {
 	std::println("Dataset label: {}", dtafile.GetDataLabel());
 	std::println("Timestamp: {}", dtafile.GetTimeStamp());
 
-	std::vector<std::string> varnames(nvar);
-	for (std::uint32_t j = 0; j < nvar; ++j) {
-		varnames[j] = dtafile.GetVariableName(j + 1);
-	}
+	std::vector<std::string> varnames = dtafile.GetVariableNames();
 	std::println("Variable\tType\tFormat\tValue Label\tVariable Label");
 
 	for (const auto& name : varnames) {
